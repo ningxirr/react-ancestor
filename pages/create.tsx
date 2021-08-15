@@ -5,6 +5,8 @@ import { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import { UploadResp } from "./api/upload";
 import Layout, { Content } from "antd/lib/layout/layout";
+import axios from "axios";
+import {HomeOutlined } from '@ant-design/icons';
 
 const CreatePage = () => {
   const [currentName, setCurrentName] = useState("");
@@ -34,6 +36,16 @@ const CreatePage = () => {
     }
   };
 
+  const url="http://localhost:3000/api/create"
+  function submit(e){
+    e.preventDefault();
+    axios.post(url,{
+      author: currentName,
+      title: currentTitle,
+      url: uploadedFile[0].url
+    })
+  }
+
   return (
     <Row justify="center" style={{ marginTop: "10em" }}>
       <Col span={12}>
@@ -49,7 +61,9 @@ const CreatePage = () => {
         <Row justify="space-around">
           <Col span={8}>Title: </Col>
           <Col span={8}>
-            <Input value={currentTitle} />
+            <Input value={currentTitle}
+             onChange={(e) => setCurrentTitle(e.target.value)} 
+          />
           </Col>
         </Row>
         <Row justify="space-around">
@@ -66,8 +80,16 @@ const CreatePage = () => {
           </Col>
         </Row>
         <Row justify="center">
-          <Button type="primary">Submit</Button>
+          <Button type="submit" onClick={submit}>Submit</Button>
         </Row>
+        <Row justify="center">
+        <Col >
+        <br /><br />
+          <Button type="primary" href="/" size="large" shape="round" icon={<HomeOutlined />}> 
+            Back to Home Page
+          </Button>
+        </Col>
+        </Row>   
       </Col>
     </Row>
   );
